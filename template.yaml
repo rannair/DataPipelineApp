@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  DataPipelineApp
+
+  Sample SAM Template for DataPipelineApp
+Globals:
+  Function:
+    Runtime: java11
+    MemorySize: 512
+    Timeout: 25
+
+Resources:
+  FanOutTopic:
+    Type: AWS::SNS::Topic
+
+  WeatherEventsData:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${ AWS::StackName }-${AWS::AccountId}-weather-data
+
+  BulkEventProcessingLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: BulkEventProcessingLambda
+      Handler: pipeline.bulk.BulkEventProcessingLambda::handleRequest
+      Environment:
+        Variables:
+          FAN_OUT_TOPIC: !Ref FanOutTopic
+      CodeUri: bulk-events-processor/target/lambda.zip
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Sub ${ AWS::StackName }-${AWS::AccountId}-weather-data
+        - SNSPublishMessagePolicy:
+            TopicName: !GetAtt FanOutTopic.TopicName
+      Events:
+        S3Event:
+          Type: S3
+          Properties:
+            Bucket: !Ref WeatherEventsData
+            Events: s3:ObjectCreated:*
+
+  SingleEventProcessingLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: SingleEventProcessingLambda
+      Handler: pipeline.single.SingleEventProcessingLambda::handleRequest
+      CodeUri: single-event-processor/target/lambda.zip
+      Events:
+        SNSEvent:
+          Type: SNS
+          Properties:
+            Topic: !Ref FanOutTopic
