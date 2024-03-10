@@ -1,6 +1,6 @@
 # DataPipelineApp
 
-This is a sample serverless DataPipeline application  which process a json file containing weather events uploaded to s3 bucket.
+This is a sample serverless DataPipeline application  to store and query data from DynamoDb.
 
 
 ## Deploy the sample application
