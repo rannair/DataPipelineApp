@@ -13,12 +13,12 @@
 
     <artifactId>bulk-events-processor</artifactId>
 
-        <dependencies>
-            <dependency>
-                <groupId>my.groupId</groupId>
-                <artifactId>common</artifactId>
-                <version>${project.parent.version}</version>
-            </dependency>
+    <dependencies>
+        <dependency>
+            <groupId>my.groupId</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-lambda-java-core</artifactId>
@@ -38,6 +38,24 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>uk.org.webcompere</groupId>
+            <artifactId>system-stubs-jupiter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-lambda-java-tests</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
