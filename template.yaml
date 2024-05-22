@@ -3,7 +3,7 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   DataPipelineApp
 
-  Sample SAM Template for DataPipelineApp
+  SAM Template for DataPipelineApp
 Globals:
   Function:
     Runtime: java11

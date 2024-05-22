@@ -19,3 +19,11 @@ To build and deploy your application for the first time, run the following in yo
 2) validate the sam template using  **sam validate -t template.yaml**
 3) create a s3 bucket for SAM to manage lambda artifacts by running **aws s3api create-bucket --bucket <BUCKET_NAME> --region us-east-1**
 4) Deploy the application using **sam deploy --s3-bucket <BUCKET_NAME>  --stack-name data-pipeline-app  --capabilities CAPABILITY_IAM**
+5) First, query CloudFormation to get the name of the S3 bucket, and assign that to a shell variable
+   PIPELINE_BUCKET="$(aws cloudformation describe-stack-resource \
+   --stack-name data-pipeline-app \
+   --logical-resource-id WeatherEventsData \
+   --query 'StackResourceDetail.PhysicalResourceId' \
+   --output text)"
+6) aws s3 cp sampledata.json s3://${PIPELINE_BUCKET}/sampledata.json
+7) Now look at the logs for the SingleEventLambda function, and you’ll see, after a few seconds, each of the weather events separately logged.
